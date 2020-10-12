@@ -1,7 +1,7 @@
 # administrador_de_tienda.py
 #
 # Jorge Claudio González Becerril
-# Juan Daniel
+# Juan Daniel Rodríguez Oropeza
 # 10/2020
 
 # Definición de funciones generales
@@ -69,7 +69,7 @@ def elegir_columna(matriz, num_columna):
     lista = []
 
     for fila in matriz:
-        lista.append(fila[num_columna - 1])
+        lista.append(fila[num_columna])
 
     return lista
 
@@ -121,12 +121,12 @@ def mostrar_menu_registrar_ventas():
     eleccion_vendedor = pedir_eleccion(matriz_vendedores, columnas_vendedores.get("nombre"), "Seleccione su nombre")
     id_vendedor = eleccion_vendedor - 1
 
-    eleccion_producto = pedir_eleccion(matriz_productos, columnas_productos.get("nombre"),
+    eleccion_producto = pedir_eleccion(matriz_inventario, columnas_inventario.get("nombre"),
                                        "Seleccione el producto a vender")
     id_producto = eleccion_producto - 1
 
     # Obtiene la cantidad disponible del producto
-    cantidad = obtener_columna(matriz_productos, columnas_productos.get("cantidad"))
+    cantidad = obtener_columna(matriz_inventario, columnas_inventario.get("cantidad"))
     cantidad_producto = int(cantidad[id_producto])
 
     # Avisa si el producto se encuentra agotado
@@ -139,34 +139,34 @@ def mostrar_menu_registrar_ventas():
 
     # Actualiza los cambios realizados a las matrices
     editar_matriz_suma(matriz_ventas, id_vendedor, id_producto + 1, eleccion_cantidad)
-    editar_matriz_suma(matriz_productos, id_producto, columnas_productos.get("cantidad") - 1, -eleccion_cantidad)
+    editar_matriz_suma(matriz_inventario, id_producto, columnas_inventario.get("cantidad"), -eleccion_cantidad)
 
 
 def obtener_diccionario_columnas_ventas():
     ''' Regresa un diccionario de las columnas en el archivo de texto de ventas. '''
 
-    diccionario = {"id": 1}
+    diccionario = {"id": 0}
     texto_ventas = open("ventas.txt", "r")
     linea = texto_ventas.readline()
     texto_ventas.close()
 
     linea = linea.split(",")
 
-    for i in range(len(linea) - 1):
-        diccionario[f"producto {i + 1}"] = i + 2
+    for i in range(1,len(linea)):
+        diccionario[f"producto {i}"] = i
 
     return diccionario
 
 
 # Declaración de diccionarios
 
-columnas_productos = {"id": 1, "modelo": 2, "nombre": 3, "cantidad": 4}
-columnas_vendedores = {"id": 1, "nombre": 2}
-columnas_ventas = obtener_diccionario_columnas_ventas()  # {"id": 1, "producto 1": 2, ..., "producto n": n + 1}
+columnas_inventario = {"id": 0, "nombre": 1, "modelo": 2, "precio": 3, "cantidad": 4}
+columnas_vendedores = {"id": 0, "nombre": 1}
+columnas_ventas = obtener_diccionario_columnas_ventas()  # {"id": 0, "producto 1": 1, ..., "producto n": n}
 
 # Declaración de matrices
 
-matriz_productos = pasar_texto_a_matriz("productos.txt")
+matriz_inventario = pasar_texto_a_matriz("inventario.txt")
 matriz_vendedores = pasar_texto_a_matriz("vendedores.txt")
 matriz_ventas = pasar_texto_a_matriz("ventas.txt")
 

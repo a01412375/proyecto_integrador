@@ -1,0 +1,4 @@
+# id del producto , nombre, modelo , precio , cantidad
+0,Agua Azucarada,Amazon,111,10
+1,Bolsas Baratas,Banorte,222,20
+2,Chocolate Crujiente,Costco,333,30
