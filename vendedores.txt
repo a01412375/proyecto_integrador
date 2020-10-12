@@ -1,4 +1,4 @@
-# id de vendedor , nombre
+# id del vendedor , nombre
 0,Alex Amora
 1,Bella Bore
 2,Clay Carson
