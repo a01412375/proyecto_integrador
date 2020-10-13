@@ -132,7 +132,7 @@ def mostrar_menu_registrar_ventas():
     # Avisa si el producto se encuentra agotado
     if cantidad_producto < 1:
         print("\nEl producto se encuentra agotado.")
-        input("Da click para continuar.")
+        input("Da Enter para continuar.")
         return
 
     eleccion_cantidad = pedir_entero(1, cantidad_producto, f"Cantidad del producto a vender (1-{cantidad_producto})")
@@ -140,6 +140,49 @@ def mostrar_menu_registrar_ventas():
     # Actualiza los cambios realizados a las matrices
     editar_matriz_suma(matriz_ventas, id_vendedor, id_producto + 1, eleccion_cantidad)
     editar_matriz_suma(matriz_inventario, id_producto, columnas_inventario.get("cantidad"), -eleccion_cantidad)
+
+
+def mostrar_menu_reporte_vendedor():
+    '''
+    Despliega el menú 5.
+    Permite revisar un reporte de los productos vendidos por cada vendedor.
+    '''
+
+    eleccion_vendedor = pedir_eleccion(matriz_vendedores, columnas_vendedores.get("nombre"), "Seleccione el vendedor")
+    id_vendedor = eleccion_vendedor - 1
+    nombre_vendedor = matriz_vendedores[id_vendedor][columnas_vendedores.get("nombre")]
+
+    print(f"\n| Reporte de Ventas de {nombre_vendedor} |")
+
+    # Imprime todos los productos con las cantidades vendidas por el vendedor a un lado
+    for productos in range(len(matriz_inventario)):
+        producto = matriz_inventario[productos][columnas_inventario.get("nombre")]
+        vendidos = matriz_ventas[id_vendedor][productos + 1]
+
+        print(f"{producto} >> {vendidos} vendidos.")
+
+    input("\nDa Enter para continuar.")
+
+
+def mostrar_menu_reporte_producto():
+    '''
+    Despliega el menú 6.
+    Permite revisar un reporte de la cantidad de veces que un producto se ha vendido por cada vendedor.
+    '''
+
+    eleccion_producto = pedir_eleccion(matriz_inventario, columnas_inventario.get("nombre"), "Seleccione el producto")
+    id_producto = eleccion_producto - 1
+    nombre_producto = matriz_inventario[id_producto][columnas_inventario.get("nombre")]
+
+    print(f"\n| Reporte de Ventas de {nombre_producto} |")
+
+    for vendedores in range(len(matriz_vendedores)):
+        vendedor = matriz_vendedores[vendedores][columnas_vendedores.get("nombre")]
+        vendidos = matriz_ventas[vendedores][id_producto + 1]
+
+        print(f"{vendedor} >> {vendidos} vendidos.")
+
+    input("\nDa Enter para continuar.")
 
 
 def obtener_diccionario_columnas_ventas():
@@ -152,7 +195,7 @@ def obtener_diccionario_columnas_ventas():
 
     linea = linea.split(",")
 
-    for i in range(1,len(linea)):
+    for i in range(1, len(linea)):
         diccionario[f"producto {i}"] = i
 
     return diccionario
@@ -172,7 +215,7 @@ matriz_ventas = pasar_texto_a_matriz("ventas.txt")
 
 # Main
 
-print("Bienvenido al Administrador de Tienda")
+print("| Bienvenido al Administrador de Tienda |")
 
 while True:
     mostrar_menu()
@@ -187,6 +230,6 @@ while True:
     elif eleccion == 4:
         pass
     elif eleccion == 5:
-        pass
+        mostrar_menu_reporte_vendedor()
     elif eleccion == 6:
-        pass
+        mostrar_menu_reporte_producto()
